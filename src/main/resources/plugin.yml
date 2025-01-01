@@ -1,0 +1,17 @@
+name: NoWindCharge
+version: '${project.version}'
+main: org.me.pyke.nowindcharge.NoWindCharge
+api-version: '1.21'
+author: 666pyke
+softdepend:
+  - WorldGuard
+commands:
+  nowindcharge:
+    permission: nowindcharge.reload
+permissions:
+  nowindcharge.bypass:
+    description: Bypass WindCharge restrictions
+    default: false
+  nowindcharge.reload:
+    description: Reload NoWindCharge config
+    default: op
