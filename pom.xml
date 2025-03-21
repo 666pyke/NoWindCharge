@@ -6,7 +6,7 @@
 
   <groupId>org.me.pyke</groupId>
   <artifactId>NoWindCharge</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.1-STABLE</version>
   <packaging>jar</packaging>
 
   <name>NoWindCharge</name>
