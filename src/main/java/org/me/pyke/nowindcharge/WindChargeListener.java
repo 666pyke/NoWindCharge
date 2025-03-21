@@ -30,7 +30,12 @@ public class WindChargeListener implements Listener {
         ItemStack mainHandItem = player.getInventory().getItemInMainHand();
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
 
-        // Check if the plugin is completely disabled for WIND_CHARGE
+        // Check if neither hand has WIND_CHARGE OR the action is not a right-click
+        if ((mainHandItem.getType() != Material.WIND_CHARGE && offHandItem.getType() != Material.WIND_CHARGE) ||
+                (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+
         if (plugin.getConfig().getBoolean("disable-completely", false)) {
             event.setCancelled(true);
             String message = plugin.getConfig().getString("completely-disabled-message", "&cWIND_CHARGE usage is completely disabled!");
@@ -38,19 +43,14 @@ public class WindChargeListener implements Listener {
             return;
         }
 
-        // Check both main hand and offhand for WIND_CHARGE
-        if ((mainHandItem.getType() == Material.WIND_CHARGE || offHandItem.getType() == Material.WIND_CHARGE) &&
-                (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+        if (player.hasPermission("nowindcharge.bypass")) {
+            return;
+        }
 
-            if (player.hasPermission("nowindcharge.bypass")) {
-                return;
-            }
-
-            if (isInExcludedRegion(player)) {
-                event.setCancelled(true);
-                String message = plugin.getConfig().getString("deny-message", "&cYou cannot use this item in region &e%region%&c!");
-                player.sendMessage(plugin.formatMessage(message.replace("%region%", getRegionName(player))));
-            }
+        if (isInExcludedRegion(player)) {
+            event.setCancelled(true);
+            String message = plugin.getConfig().getString("deny-message", "&cYou cannot use this item in region &e%region%&c!");
+            player.sendMessage(plugin.formatMessage(message.replace("%region%", getRegionName(player))));
         }
     }
 
